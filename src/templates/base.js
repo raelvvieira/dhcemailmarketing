@@ -1,4 +1,10 @@
-module.exports = function base({ title, body, accentColor = '#111111' }) {
+const GRADIENT = 'linear-gradient(135deg, #8100FF 0%, #FF1E40 100%)';
+
+module.exports = function base({ title, body, useGradientAccent = false }) {
+  const topBar = useGradientAccent
+    ? `<td style="background:${GRADIENT};height:4px;font-size:0;line-height:0;">&nbsp;</td>`
+    : `<td style="background:#ffffff;height:4px;font-size:0;line-height:0;">&nbsp;</td>`;
+
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -26,11 +32,9 @@ module.exports = function base({ title, body, accentColor = '#111111' }) {
           <tr>
             <td style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
 
-              <!-- Barra de destaque superior -->
+              <!-- Barra superior -->
               <table width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="background:${accentColor};height:4px;font-size:0;line-height:0;">&nbsp;</td>
-                </tr>
+                <tr>${topBar}</tr>
               </table>
 
               <!-- Conteúdo -->

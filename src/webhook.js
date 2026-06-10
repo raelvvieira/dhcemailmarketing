@@ -12,6 +12,7 @@ async function handleWebhook(body) {
     product: order.product_name || body?.product?.name || 'Produto',
     orderId: order.order_id || body?.order_id || '',
     amount: formatAmount(order.product_price || body?.amount),
+    // email é passado explicitamente para o template poder exibir no corpo
   };
 
   if (!data.email) {

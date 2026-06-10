@@ -1,8 +1,24 @@
 const { sendEmail } = require('./mailer');
 const templates = require('./templates');
 
+// Mapeamento dos nomes de eventos reais da Kiwify para os templates
+const EVENT_MAP = {
+  'order_approved':        'order_approved',
+  'order_billet':          'order_billet',
+  'billet_created':        'order_billet',
+  'order_pix':             'order_pix',
+  'pix_created':           'order_pix',
+  'order_refunded':        'order_refunded',
+  'refund_requested':      'order_refunded',
+  'order_chargeback':      'order_chargeback',
+  'chargeback_created':    'order_chargeback',
+  'subscription_canceled': 'subscription_canceled',
+  'subscription_renewal':  'subscription_renewal',
+};
+
 async function handleWebhook(body) {
-  const event = body?.webhook_event_type;
+  const rawEvent = body?.webhook_event_type;
+  const event = EVENT_MAP[rawEvent];
   const order = body?.order || {};
   const customer = body?.customer || body?.Customer || {};
 
@@ -12,31 +28,29 @@ async function handleWebhook(body) {
     product: order.product_name || body?.product?.name || 'Produto',
     orderId: order.order_id || body?.order_id || '',
     amount: formatAmount(order.product_price || body?.amount),
-    // email é passado explicitamente para o template poder exibir no corpo
   };
 
   if (!data.email) {
-    console.log(`Evento ${event} sem email de cliente, ignorando.`);
+    console.log(`Evento ${rawEvent} sem email de cliente, ignorando.`);
     return;
   }
 
-  console.log(`Evento recebido: ${event} | Cliente: ${data.email}`);
+  console.log(`Evento recebido: ${rawEvent} | Cliente: ${data.email}`);
+
+  if (!event) {
+    console.log(`Evento "${rawEvent}" sem template configurado.`);
+    return;
+  }
 
   const template = templates[event];
-  if (!template) {
-    console.log(`Evento "${event}" sem template configurado.`);
-    return;
-  }
-
   const { subject, html } = template(data);
-  console.log(`Tentando enviar email para ${data.email} via ${process.env.SMTP_HOST}:${process.env.SMTP_PORT} (secure=${process.env.SMTP_SECURE})`);
+
   try {
     await sendEmail({ to: data.email, subject, html });
-    console.log(`Email enviado para ${data.email} (${event})`);
-  } catch (smtpErr) {
-    console.error(`Erro SMTP: ${smtpErr.message}`);
-    console.error(`Código: ${smtpErr.code} | Resposta: ${smtpErr.response || 'sem resposta'}`);
-    throw smtpErr;
+    console.log(`Email enviado para ${data.email} (${rawEvent})`);
+  } catch (err) {
+    console.error(`Erro ao enviar email: ${err.message}`);
+    throw err;
   }
 }
 

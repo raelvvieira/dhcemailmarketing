@@ -1,4 +1,4 @@
-module.exports = function base({ title, body }) {
+module.exports = function base({ title, body, accentColor = '#111111' }) {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,33 +6,72 @@ module.exports = function base({ title, body }) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
 </head>
-<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:30px 0;">
+<body style="margin:0;padding:0;background:#f0f0f0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;padding:40px 0;">
     <tr>
       <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-          <!-- Header -->
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- LOGO -->
           <tr>
-            <td style="background:#1a1a2e;padding:28px 40px;text-align:center;">
-              <h1 style="margin:0;color:#ffffff;font-size:22px;letter-spacing:1px;">Deni Haut Cursos</h1>
+            <td align="center" style="padding:0 0 24px 0;">
+              <img src="https://i.ibb.co/R424CQrC/Design-sem-nome.png"
+                   alt="Deni Haut"
+                   width="160"
+                   style="display:block;max-width:160px;height:auto;" />
             </td>
           </tr>
-          <!-- Body -->
+
+          <!-- CARD -->
           <tr>
-            <td style="padding:36px 40px;color:#333333;font-size:15px;line-height:1.7;">
-              <h2 style="margin:0 0 20px;color:#1a1a2e;font-size:20px;">${title}</h2>
-              ${body}
+            <td style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+              <!-- Barra de destaque superior -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background:${accentColor};height:4px;font-size:0;line-height:0;">&nbsp;</td>
+                </tr>
+              </table>
+
+              <!-- Conteúdo -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding:44px 48px 40px;">
+
+                    <!-- Título -->
+                    <h1 style="margin:0 0 28px;color:#111111;font-size:22px;font-weight:700;line-height:1.3;letter-spacing:-0.3px;">${title}</h1>
+
+                    <!-- Divider -->
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+                      <tr>
+                        <td style="border-top:1px solid #eeeeee;font-size:0;line-height:0;">&nbsp;</td>
+                      </tr>
+                    </table>
+
+                    <!-- Body -->
+                    <div style="color:#444444;font-size:15px;line-height:1.75;">
+                      ${body}
+                    </div>
+
+                  </td>
+                </tr>
+              </table>
+
             </td>
           </tr>
-          <!-- Footer -->
+
+          <!-- FOOTER -->
           <tr>
-            <td style="background:#f9f9f9;padding:20px 40px;text-align:center;border-top:1px solid #eeeeee;">
-              <p style="margin:0;color:#999999;font-size:12px;">
-                Você está recebendo este email porque realizou uma compra conosco.<br>
+            <td align="center" style="padding:28px 0 0;">
+              <p style="margin:0 0 6px;color:#aaaaaa;font-size:12px;line-height:1.6;">
+                Você está recebendo este email porque realizou uma compra conosco.
+              </p>
+              <p style="margin:0;color:#aaaaaa;font-size:12px;">
                 Em caso de dúvidas, responda este email.
               </p>
             </td>
           </tr>
+
         </table>
       </td>
     </tr>

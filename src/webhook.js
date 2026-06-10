@@ -29,8 +29,15 @@ async function handleWebhook(body) {
   }
 
   const { subject, html } = template(data);
-  await sendEmail({ to: data.email, subject, html });
-  console.log(`Email enviado para ${data.email} (${event})`);
+  console.log(`Tentando enviar email para ${data.email} via ${process.env.SMTP_HOST}:${process.env.SMTP_PORT} (secure=${process.env.SMTP_SECURE})`);
+  try {
+    await sendEmail({ to: data.email, subject, html });
+    console.log(`Email enviado para ${data.email} (${event})`);
+  } catch (smtpErr) {
+    console.error(`Erro SMTP: ${smtpErr.message}`);
+    console.error(`Código: ${smtpErr.code} | Resposta: ${smtpErr.response || 'sem resposta'}`);
+    throw smtpErr;
+  }
 }
 
 function formatAmount(val) {

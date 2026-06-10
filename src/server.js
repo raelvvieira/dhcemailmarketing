@@ -31,7 +31,9 @@ app.post('/webhook/kiwify', async (req, res) => {
       .update(req.rawBody)
       .digest('hex');
 
-    if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
+    const sigBuf = Buffer.from(signature.padEnd(expected.length, ' '));
+    const expBuf = Buffer.from(expected);
+    if (sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) {
       console.warn('Assinatura Kiwify inválida — requisição rejeitada');
       return res.status(401).json({ error: 'Assinatura inválida' });
     }

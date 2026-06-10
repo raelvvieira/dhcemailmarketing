@@ -106,10 +106,6 @@ module.exports = {
           </tr>
         </table>
 
-        ${infoRow('Produto adquirido', product)}
-        ${infoRow('Pedido', orderId)}
-        ${infoRow('Valor', amount)}
-
         <p style="margin:24px 0 0;color:#666666;font-size:14px;">Qualquer dúvida, basta responder este email. Estamos aqui para te ajudar! 💜</p>
       `,
     }),
